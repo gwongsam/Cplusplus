@@ -38,8 +38,8 @@ class session : public std::enable_shared_from_this<session> {
 
 class server {
  public:
-  server(asio::io_service& io_service, std::uint16_t port)
-      : acceptor_(io_service,
+  server(asio::io_context& io_context, std::uint16_t port)
+      : acceptor_(io_context,
                   asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port)) {
     do_accept();
   }
@@ -60,9 +60,9 @@ class server {
 
 int asio_server() {
   try {
-    asio::io_service io_service;
-    server s(io_service, 12345);
-    io_service.run();
+    asio::io_context io_context;
+    server s(io_context, 12345);
+    io_context.run();
   } catch (std::exception& e) {
     std::cerr << "Exception: " << e.what() << std::endl;
   }

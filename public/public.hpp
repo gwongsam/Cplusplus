@@ -11,7 +11,7 @@
 
 namespace aux {
 template <typename Number>
-Number Random(long long sub = 0, long long upper = 100) {
+Number Random(Number sub = 0, Number upper = 100) {
   static std::random_device rd;
   static std::default_random_engine generator(rd());
 
@@ -19,18 +19,38 @@ Number Random(long long sub = 0, long long upper = 100) {
   return distribution(generator);
 }
 
-template <typename Number>
-std::vector<Number> Randoms(size_t quantity, long long sub = 0,
-                            long long upper = 100) {
+template <typename Number,
+          typename std::enable_if<std::is_integral<Number>::value, Number>::type
+              * = nullptr>
+std::vector<Number> Randoms(size_t quantity, Number sub = 0,
+                            Number upper = 100) {
   std::random_device rd;
   std::default_random_engine generator(rd());
   std::uniform_int_distribution<Number> distribution(sub, upper);
 
   std::vector<Number> values;
+  values.reserve(quantity);
   for (size_t i = 0; i < quantity; i++) {
     values.push_back(distribution(generator));
   }
-  return std::move(values);
+  return values;
+}
+
+template <typename Number,
+          typename std::enable_if<std::is_floating_point<Number>::value,
+                                  Number>::type * = nullptr>
+std::vector<Number> Randoms(size_t quantity, Number sub = 0.0,
+                            Number upper = 100.0) {
+  std::random_device rd;
+  std::default_random_engine generator(rd());
+  std::uniform_real_distribution<Number> distribution(sub, upper);
+
+  std::vector<Number> values;
+  values.reserve(quantity);
+  for (size_t i = 0; i < quantity; i++) {
+    values.push_back(distribution(generator));
+  }
+  return values;
 }
 
 int RandomInt(size_t sub = 0, size_t upper = 100) {

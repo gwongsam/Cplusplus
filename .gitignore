@@ -4,3 +4,6 @@ tcp_server_client/
 Myhexin
 third_party/
 finance/
+.DS_Store
+**/.DS_Store
+exe.dSYM/

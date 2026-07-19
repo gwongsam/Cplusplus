@@ -6,6 +6,8 @@ extern "C" {
 #include <openssl/bio.h>
 #include <openssl/buffer.h>
 #include <openssl/evp.h>
+#include <iostream>
+#include <string>
 
 std::string base64_encode(const std::string &in) {
   BIO *bio, *b64;
